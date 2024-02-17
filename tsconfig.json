@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "outDir": "dist",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "auto",
+    "target": "ESNext",
+    "typeRoots": ["node_modules/@types/"],
+    "paths": {
+      "*": ["node_modules/"],
+      "~/*": ["*"]
+    },
+    "strict": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "compiler": "typescript",
+    "files": true,
+    "logError": true,
+    "pretty": true
+  }
+}

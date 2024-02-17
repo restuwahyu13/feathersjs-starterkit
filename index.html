@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Todos</title>
+  </head>
+  <body class="bg-dark text-white">
+    <nav class="navbar navbar-light bg-light">
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">Todos Project</span>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <form id="form">
+          <div class="form-group">
+            <input
+              type="text"
+              id="todo-title"
+              class="form-control bg-dark text-white"
+              placeholder="Enter your title"
+              maxlength="20"
+              required
+            />
+          </br>
+            <div class="form-group">
+              <input
+                type="text"
+                id="todo-content"
+                class="form-control bg-dark text-white"
+                placeholder="Enter content (1000 chars max)"
+                maxlength="1000"
+                required
+              />
+            </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Submit
+            </button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div id="todo">
+          </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+    <script>
+      // Init socket.io instance
+      const socket = io('http://localhost:3030');
+
+      // Init instance feather app
+      const app = feathers();
+
+      // Configure dependencies to feathers app
+      app.configure(feathers.socketio(socket));
+
+      // Init event submit for form data
+      document.getElementById('form').addEventListener('submit', sendIdea);
+
+      async function sendIdea(e) {
+        e.preventDefault();
+
+        const nameText = document.getElementById('todo-title');
+        const contentText = document.getElementById('todo-content');
+
+        // Create new todos
+        app.service('todos').create({
+          title: nameText.value,
+          content: contentText.value,
+          userId: socket.id
+        });
+
+        // Clear inputs
+        nameText.value = '';
+        contentText.value = '';
+      }
+
+      function renderIdea(todo) {
+        console.log("FROM SERVER: ", todo)
+
+        document.getElementById('todo').innerHTML += `
+          <div class="card bg-secondary my-3">
+            <div class="card-body">
+              <p class="lead">
+                <strong>(${todo.title})</strong>
+                <small>${todo.content}</small>
+              </p>
+            </div>
+          </div>`
+      }
+
+      async function init() {
+        // List all todos
+        const todos = await app.service('todos').find();
+        todos.forEach(renderIdea);
+
+        // Show todos in realtime, if user create new todo
+        app.service('todos').on('created', renderIdea);
+      }
+
+      init();
+    </script>
+  </body>
+</html>

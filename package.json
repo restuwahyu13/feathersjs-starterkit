@@ -1,0 +1,77 @@
+{
+  "name": "feathersjs-starterkit",
+  "description": "Realtime Application With FeatherJS",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "scripts": {
+    "ts-bin:dev": "cross-env NODE_ENV=development nodemon src/main.ts",
+    "ts-bin:prod": "tsc -P tsconfig.json && tsc-alias",
+    "cleanup": "rimraf dist",
+    "start": "node dist/main.js",
+    "build": "npm run cleanup && npm run ts-bin:prod",
+    "dev": "npm run ts-bin:dev"
+  },
+  "author": {
+    "name": "Restu Wahyu Saputra",
+    "email": "restuwahyu13@gmail.com",
+    "url": "https://github.com/restuwahyu13"
+  },
+  "maintainers": [
+    "Restu Wahyu Saputra"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/restuwahyu13/feathersjs-starterkit"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 18.x.x",
+    "npm": ">= 9.x.x"
+  },
+  "dependencies": {
+    "@feathersjs/adapter-commons": "^4.5.17",
+    "@feathersjs/authentication": "^4.5.18",
+    "@feathersjs/authentication-client": "^4.5.18",
+    "@feathersjs/configuration": "^4.5.17",
+    "@feathersjs/errors": "^4.5.17",
+    "@feathersjs/express": "^4.5.18",
+    "@feathersjs/feathers": "^4.5.17",
+    "@feathersjs/schema": "^5.0.8",
+    "@feathersjs/socketio": "^4.5.18",
+    "@feathersjs/transport-commons": "^4.5.18",
+    "@feathersjs/typebox": "^5.0.8",
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.4",
+    "express-async-errors": "^3.1.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@feathersjs/cli": "^4.8.0",
+    "@feathersjs/rest-client": "^4.5.18",
+    "@types/node": "^20.11.19",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "feathers": {
+    "language": "ts",
+    "packager": "npm",
+    "database": "other",
+    "framework": "express",
+    "transports": [
+      "rest",
+      "websockets"
+    ],
+    "schema": "typebox"
+  },
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  }
+}
