@@ -3,7 +3,7 @@ import { HookContext, Params, ServiceMethods } from '@feathersjs/feathers'
 import { ModelStatic } from 'sequelize'
 
 import { Inject, Injectable } from '~/helpers/helper.di'
-import { TodosModel } from '~/models/model.todos'
+import { Todos } from '~/models/model.todos'
 
 @Injectable()
 export class TodosService implements Partial<ServiceMethods<any>> {
@@ -13,7 +13,7 @@ export class TodosService implements Partial<ServiceMethods<any>> {
     @Inject('FeathersMetadata')
     private readonly feathersMetadata: Application,
     @Inject('TodosModel')
-    private readonly todosModel: ModelStatic<TodosModel>
+    private readonly todosModel: ModelStatic<Todos>
   ) {}
 
   private broadcast(): void {

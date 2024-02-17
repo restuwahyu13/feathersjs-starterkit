@@ -4,7 +4,7 @@ import { DependencyContainer } from 'tsyringe'
 import { TodosService } from '~/services/todos.service'
 import { Inject, Injectable, Module } from '~/helpers/helper.di'
 import { FeathersMetadata } from '~/helpers/helper.feathersMetadata'
-import { TodosModel } from '~/models/model.todos'
+import { Todos } from '~/models/model.todos'
 
 @Module([
   {
@@ -13,8 +13,8 @@ import { TodosModel } from '~/models/model.todos'
   },
   {
     token: 'TodosModel',
-    useFactory(dc: DependencyContainer): ModelStatic<TodosModel> {
-      return dc.resolve(TodosModel).adapter
+    useFactory(dc: DependencyContainer): ModelStatic<Todos> {
+      return dc.resolve(Todos).model
     }
   },
   {

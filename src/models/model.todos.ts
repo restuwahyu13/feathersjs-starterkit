@@ -4,8 +4,8 @@ import { SequelizeAdapter } from 'feathers-sequelize'
 import { Injectable } from '~/helpers/helper.di'
 
 @Injectable()
-export class TodosModel extends Model {
-  private static model = TodosModel.init(
+export class Todos extends Model {
+  private static setup = Todos.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, unique: true, allowNull: false, defaultValue: DataTypes.UUIDV4 },
       createdTime: { type: DataTypes.DATE, field: 'updatedtime', allowNull: false, defaultValue: DataTypes.NOW },
@@ -16,14 +16,14 @@ export class TodosModel extends Model {
     },
     {
       sequelize: Database.sequelize,
-      modelName: 'Todos',
+      modelName: Todos.name.toLowerCase(),
       createdAt: false,
       updatedAt: false
     }
   )
 
-  adapter: ModelStatic<TodosModel> = new SequelizeAdapter({
-    Model: TodosModel.model,
+  model: ModelStatic<Todos> = new SequelizeAdapter({
+    Model: Todos.setup,
     multi: true,
     paginate: { max: 1000 }
   }).Model
