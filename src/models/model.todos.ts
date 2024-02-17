@@ -5,7 +5,7 @@ import { Injectable } from '~/helpers/helper.di'
 
 @Injectable()
 export class Todos extends Model {
-  private static setup = Todos.init(
+  private static columns = Todos.init(
     {
       id: { type: DataTypes.UUID, primaryKey: true, unique: true, allowNull: false, defaultValue: DataTypes.UUIDV4 },
       createdTime: { type: DataTypes.DATE, field: 'updatedtime', allowNull: false, defaultValue: DataTypes.NOW },
@@ -23,7 +23,7 @@ export class Todos extends Model {
   )
 
   model: ModelStatic<Todos> = new SequelizeAdapter({
-    Model: Todos.setup,
+    Model: Todos.columns,
     multi: true,
     paginate: { max: 1000 }
   }).Model
