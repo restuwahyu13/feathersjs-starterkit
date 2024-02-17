@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import 'express-async-errors'
 import 'dotenv/config'
 import feathers from '@feathersjs/feathers'
@@ -11,10 +12,12 @@ import hpp from 'hpp'
 import morgan from 'morgan'
 import reusify from 'reusify'
 
-import { logger } from '~/app.logger'
-import { Services } from '~/app.services'
-import { Channels } from '~/app.channels'
+import { Container, Module } from '~/helpers/helper.di'
+import { TodosModule } from '~/modules/todos.module'
+import { logger } from '~/libs/lib.wingston'
+import { AppModule } from '~/app.module'
 
+@Module([{ token: 'AppModule', useClass: AppModule }])
 export class App {
   private readonly app: Application
   private readonly port: number
@@ -56,6 +59,7 @@ export class App {
   private configure(): void {
     this.app.configure(rest())
     this.app.configure(socketio())
+    Container.register('FeathersMetadata', { useValue: this.app })
   }
 
   private event() {
@@ -65,8 +69,9 @@ export class App {
   }
 
   private inject(): void {
-    this.app.configure(new Channels().inject)
-    this.app.configure(new Services().inject)
+    this.app.configure((app: Application): void => {
+      app.use('todos', Container.resolve<TodosModule>('TodosModule'))
+    })
   }
 
   private run() {

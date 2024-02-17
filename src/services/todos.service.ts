@@ -1,18 +1,25 @@
 import { Application } from '@feathersjs/express'
 import { HookContext, Params, ServiceMethods } from '@feathersjs/feathers'
+import { ModelStatic } from 'sequelize'
 
+import { Inject, Injectable } from '~/helpers/helper.di'
+import { TodosModel } from '~/models/model.todos'
+
+@Injectable()
 export class TodosService implements Partial<ServiceMethods<any>> {
-  private app: Application
   private todos: Record<string, any>[] = []
 
-  constructor(app: Application) {
-    this.app = app
-  }
+  constructor(
+    @Inject('FeathersMetadata')
+    private readonly feathersMetadata: Application,
+    @Inject('TodosModel')
+    private readonly todosModel: ModelStatic<TodosModel>
+  ) {}
 
   private broadcast(): void {
-    this.app.service('todos').publish((_data: any, _context: HookContext) => {
+    this.feathersMetadata.service('todos').publish((_data: any, _context: HookContext) => {
       this.todos = []
-      return this.app.channel('todosChannel')
+      return this.feathersMetadata.channel('todosChannel')
     })
   }
 
