@@ -1,14 +1,11 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/channels.html
 import { AuthenticationResult } from '@feathersjs/authentication'
-import { Application } from '@feathersjs/express'
 import { RealTimeConnection } from '@feathersjs/transport-commons/lib/channels/channel/base'
-import { HookContext } from '~/app.declarations'
+import { Application, HookContext } from '~/app.declarations'
 
 export class Channels {
   inject(app: Application): void {
     app.on('connection', (connection: RealTimeConnection) => {
-      console.info('Socket Connected:', connection.provider)
-
       app.channel('anonymous').leave(connection)
       app.channel('todosChannel').join(connection)
     })

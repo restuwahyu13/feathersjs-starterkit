@@ -4,7 +4,7 @@ import { Application as FeathersApplication } from '@feathersjs/express'
 import { TodosService } from '~/services/todos.service'
 
 // A mapping of service names to types. Will be extended in service files.
-interface ServiceTypes {
+export interface ServiceTypes {
   todos: TodosService
 }
 
