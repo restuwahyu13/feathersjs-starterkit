@@ -62,13 +62,13 @@ export class App {
     Container.register('FeathersMetadata', { useValue: this.app })
   }
 
-  private event() {
+  private channel() {
     this.app.on('connection', (con: any) => {
       this.app.channel('todosChannel').join(con)
     })
   }
 
-  private inject(): void {
+  private route(): void {
     this.app.configure((app: Application): void => {
       app.use('todos', Container.resolve<TodosModule>('TodosModule'))
     })
@@ -82,8 +82,8 @@ export class App {
   main(): void {
     this.middleware()
     this.configure()
-    this.event()
-    this.inject()
+    this.channel()
+    this.route()
     this.run()
   }
 }
