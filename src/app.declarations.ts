@@ -1,6 +1,7 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/typescript.html
 import { HookContext as FeathersHookContext } from '@feathersjs/feathers'
 import { Application as FeathersApplication } from '@feathersjs/express'
+
 import { TodosService } from '~/services/todos.service'
 
 // A mapping of service names to types. Will be extended in service files.

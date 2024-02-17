@@ -26,5 +26,5 @@ import { Todos } from '~/models/model.todos'
 ])
 @Injectable()
 export class TodosModule {
-  constructor(@Inject('TodosService') public readonly todosService: TodosService) {}
+  constructor(@Inject('TodosService') public readonly service: TodosService) {}
 }

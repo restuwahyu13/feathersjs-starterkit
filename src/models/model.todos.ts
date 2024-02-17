@@ -1,6 +1,7 @@
-import { DataTypes, Model, ModelStatic } from 'sequelize'
-import { Database } from '~/configs/config.database'
 import { SequelizeAdapter } from 'feathers-sequelize'
+import { DataTypes, Model, ModelStatic } from 'sequelize'
+
+import { Database } from '~/configs/config.database'
 import { Injectable } from '~/helpers/helper.di'
 
 @Injectable()
