@@ -78,11 +78,16 @@
         const nameText = document.getElementById('todo-title');
         const contentText = document.getElementById('todo-content');
 
+
         // Create new todos
         app.service('todos').create({
           title: nameText.value,
           content: contentText.value,
           userId: socket.id
+        }, {
+          headers: {
+            "Authorization": "Bearer 1234"
+          }
         });
 
         // Clear inputs
@@ -91,7 +96,7 @@
       }
 
       function renderIdea(todo) {
-        console.log("FROM SERVER: ", todo)
+        console.log("FROM SERVER 1: ", todo)
 
         document.getElementById('todo').innerHTML += `
           <div class="card bg-secondary my-3">
@@ -106,11 +111,14 @@
 
       async function init() {
         // List all todos
-        const todos = await app.service('todos').find();
-        todos.forEach(renderIdea);
+        const { data } = await app.service('todos').find();
+        data.forEach(renderIdea);
 
         // Show todos in realtime, if user create new todo
-        app.service('todos').on('created', renderIdea);
+        app.service('todos').on('created', ( { data }) => {
+          console.log('FROM SERVER 2: ', data)
+          renderIdea(data)
+        });
       }
 
       init();

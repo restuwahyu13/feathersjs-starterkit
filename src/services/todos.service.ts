@@ -1,36 +1,32 @@
-import { Application } from '@feathersjs/express'
 import { HookContext, Params, ServiceMethods } from '@feathersjs/feathers'
+import { StatusCodes as status } from 'http-status-codes'
 import { ModelStatic } from 'sequelize'
 
-import { Inject, Injectable } from '~/helpers/helper.di'
-import { Todos } from '~/models/model.todos'
+import { TodosCreateDTO } from '~/dtos/todos.dto'
+import { apiResponse } from '~/helpers/api.helper'
+import { Inject, Injectable } from '~/helpers/di.helper'
+import { Todos } from '~/models/todos.model'
 
 @Injectable()
 export class TodosService implements Partial<ServiceMethods<any>> {
+  private service: string = 'todos'
   private todos: Record<string, any>[] = []
 
   constructor(
-    @Inject('FeathersMetadata')
-    private readonly feathersMetadata: Application,
     @Inject('TodosModel')
     private readonly todosModel: ModelStatic<Todos>
   ) {}
 
-  private broadcast(): void {
-    this.feathersMetadata.service('todos').publish((_data: any, _context: HookContext) => {
-      this.todos = []
-      return this.feathersMetadata.channel('todosChannel')
-    })
-  }
-
   async find(_params: Params): Promise<Record<string, any> | Record<string, any>[]> {
-    return this.todos
+    return apiResponse(this.service, { stat_code: status.OK, stat_message: 'Success', data: this.todos })
   }
 
-  async create(data: any): Promise<any> {
+  async create(data: TodosCreateDTO, _ctx: HookContext): Promise<any> {
+    if (this.todos.length > 0) {
+      this.todos = []
+    }
     this.todos.push(data)
-    this.broadcast()
 
-    return this.todos
+    return apiResponse(this.service, { stat_code: status.OK, stat_message: 'Success', data })
   }
 }

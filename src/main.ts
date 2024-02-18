@@ -12,9 +12,9 @@ import hpp from 'hpp'
 import morgan from 'morgan'
 import reusify from 'reusify'
 
-import { Container, Module } from '~/helpers/helper.di'
+import { Container, Module } from '~/helpers/di.helper'
 import { TodosModule } from '~/modules/todos.module'
-import { logger } from '~/libs/lib.wingston'
+import { logger } from '~/libs/winston.lib'
 import { AppModule } from '~/app.module'
 
 @Module([{ token: 'AppModule', useClass: AppModule }])
@@ -33,7 +33,6 @@ export class App {
     this.app.use(json({ limit: '1mb' }))
     this.app.use(raw({ inflate: true, limit: '1mb', type: 'application/json' }))
     this.app.use(urlencoded({ extended: true }))
-    this.app.use(errorHandler({ logger }))
     this.app.use(helmet({ contentSecurityPolicy: false }))
     this.app.use(hpp({ checkBody: true, checkQuery: true, checkBodyOnlyForContentType: 'application/json' }))
     this.app.use(
@@ -62,28 +61,32 @@ export class App {
     Container.register('FeathersMetadata', { useValue: this.app })
   }
 
-  private channel() {
-    this.app.on('connection', (con: any) => {
-      this.app.channel('todosChannel').join(con)
-    })
-  }
-
-  private route(): void {
+  private inject(): void {
     this.app.configure((app: Application): void => {
-      app.use('todos', Container.resolve<TodosModule>('TodosModule'))
+      /**
+       * Declare all service for rest api here
+       */
+
+      app.use('todos', Container.resolve<TodosModule>('TodosModule').service)
+
+      /**
+       * Declare all channel for socket.io here
+       */
+
+      app.configure(Container.resolve<TodosModule>('TodosModule').channel)
     })
   }
 
   private run() {
     this.app.use(notFound())
+    this.app.use(errorHandler({ html: false, json: true }))
     this.app.listen(this.port, () => logger.info(`Server listening on port ${this.port}`))
   }
 
   main(): void {
     this.middleware()
     this.configure()
-    this.channel()
-    this.route()
+    this.inject()
     this.run()
   }
 }

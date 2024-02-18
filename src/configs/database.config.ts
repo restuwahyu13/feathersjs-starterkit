@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize'
-import { Env } from '~/configs/config.env'
+import { Env } from '~/configs/env.config'
 
 export class Database {
   private static setup(): Sequelize {
