@@ -13,7 +13,7 @@ import morgan from 'morgan'
 import reusify from 'reusify'
 
 import { Container, Module } from '~/helpers/di.helper'
-import { TodosModule } from '~/modules/todos.module'
+import { TodosModule } from '~/domains/todos/todos.module'
 import { logger } from '~/libs/winston.lib'
 import { AppModule } from '~/app.module'
 

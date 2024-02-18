@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { Handler, Inject, Injectable } from '~/helpers/di.helper'
 import { AuthMiddleware } from '~/middlewares/auth.middleware'
-import { TodosValidator } from '~/validators/todos.validator'
+import { TodosValidator } from '~/domains/todos/todos.validator'
 
 @Injectable()
 export class TodosHook {

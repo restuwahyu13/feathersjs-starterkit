@@ -2,10 +2,10 @@ import { HookContext, Params, ServiceMethods } from '@feathersjs/feathers'
 import { StatusCodes as status } from 'http-status-codes'
 import { ModelStatic } from 'sequelize'
 
-import { TodosCreateDTO } from '~/dtos/todos.dto'
+import { TodosCreateDTO } from '~/domains/todos/todos.dto'
 import { apiResponse } from '~/helpers/api.helper'
 import { Inject, Injectable } from '~/helpers/di.helper'
-import { Todos } from '~/models/todos.model'
+import { Todos } from '~/domains/todos/todos.model'
 
 @Injectable()
 export class TodosService implements Partial<ServiceMethods<any>> {

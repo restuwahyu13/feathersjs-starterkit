@@ -1,8 +1,8 @@
 import { DependencyContainer } from 'tsyringe'
 
 import { Injectable, Module } from '~/helpers/di.helper'
-import { TodosModule } from '~/modules/todos.module'
-import { TodosService } from '~/services/todos.service'
+import { TodosModule } from '~/domains/todos/todos.module'
+import { TodosService } from '~/domains/todos/todos.service'
 
 @Module([
   {
