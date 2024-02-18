@@ -1,17 +1,24 @@
 import { ModelStatic } from 'sequelize'
 import { DependencyContainer } from 'tsyringe'
 
-import { Handler, Inject, Injectable, Module } from '~/helpers/di.helper'
+import { Handler, HandlerContext, Inject, Injectable, Module } from '~/helpers/di.helper'
 import { TodosService } from '~/services/todos.service'
 import { Todos } from '~/models/todos.model'
 import { TodosChannel } from '~/channels/todos.channel'
-import { AuthHook } from '~/hooks/auth.hook'
 import { TodosValidator } from '~/validators/todos.validator'
+import { AuthMiddleware } from '~/middlewares/auth.middleware'
+import { TodosHook } from '~/hooks/todos.hook'
 
 @Module([
   {
     token: 'TodosService',
     useClass: TodosService
+  },
+  {
+    token: 'TodosHook',
+    useFactory(dc: DependencyContainer): Handler {
+      return dc.resolve(TodosHook).inject()
+    }
   },
   {
     token: 'TodosChannel',
@@ -32,9 +39,9 @@ import { TodosValidator } from '~/validators/todos.validator'
     }
   },
   {
-    token: 'AuthHook',
-    useFactory(dc: DependencyContainer): AuthHook {
-      return dc.resolve(AuthHook)
+    token: 'AuthMiddleware',
+    useFactory(dc: DependencyContainer): AuthMiddleware {
+      return dc.resolve(AuthMiddleware)
     }
   }
 ])
@@ -42,6 +49,7 @@ import { TodosValidator } from '~/validators/todos.validator'
 export class TodosModule {
   constructor(
     @Inject('TodosService') public readonly service: TodosService,
+    @Inject('TodosHook') public readonly hook: Handler,
     @Inject('TodosChannel') public readonly channel: Handler
   ) {}
 }

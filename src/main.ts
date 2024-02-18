@@ -70,7 +70,13 @@ export class App {
       app.use('todos', Container.resolve<TodosModule>('TodosModule').service)
 
       /**
-       * Declare all channel for socket.io here
+       * Declare all hook for service here
+       */
+
+      app.configure(Container.resolve<TodosModule>('TodosModule').hook)
+
+      /**
+       * Declare all channel for socket.io here, only for realtime use case (optional)
        */
 
       app.configure(Container.resolve<TodosModule>('TodosModule').channel)

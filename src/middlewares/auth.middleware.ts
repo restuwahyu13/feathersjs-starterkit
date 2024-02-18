@@ -5,7 +5,7 @@ import { apiResponse } from '~/helpers/api.helper'
 import { Handler, HandlerContext, Injectable } from '~/helpers/di.helper'
 
 @Injectable()
-export class AuthHook {
+export class AuthMiddleware {
   context(service: string): HandlerContext {
     return (ctx: HookContext): HookContext => {
       if (ctx.params.headers.authorization.split('Bearer ')[1] !== 'abc123') {
