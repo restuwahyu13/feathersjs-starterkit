@@ -31,6 +31,6 @@ const formats: FormatsPluginOptions = [
 ]
 
 export const addFormatsValidator = addFormats(
-  new Ajv({ strict: true, strictSchema: true, logger: logger, verbose: true, parseDate: true, validateSchema: true }),
+  new Ajv({ strict: true, strictSchema: true, logger: logger, parseDate: true, validateSchema: true }),
   formats
 )

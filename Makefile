@@ -1,26 +1,4 @@
 #############################
-# Docker Teritory
-#############################
-DOCKER := docker
-COMPOSE := docker-compose
-
-dkbu:
-	${DOCKER} build --tag node-gr8-api:latest --compress .
-	${DOCKER} tag node-gr8-api:latest 705471/node-gr8-api:latest
-
-dkpu:
-	${DOCKER} push 705471/node-gr8-api:latest
-
-dkru:
-	${DOCKER} run --name node-gr8-api -p 3000:3000 --restart always --env-file .env --privileged -d 705471/node-gr8:latest
-
-dcu:
-	${COMPOSE} up -d --remove-orphans --build
-
-dcd:
-	${COMPOSE} down
-
-#############################
 # Application Teritory
 #############################
 NPM := npm
@@ -33,3 +11,31 @@ start:
 
 build:
 	${NPM} run build
+
+
+#############################
+# Migration Teritory
+#############################
+SCLI := @npx sequelize-cli
+TSC := ./node_modules/.bin/tsc
+OUT_DIR := dist/databases
+TARGET_DIR := src/databases/**/*.ts
+
+mig-status:
+	${SCLI} db:migrate:status
+
+mig-build:
+	${TSC} --outDir ${OUT_DIR} --target es2018  --module commonjs --esModuleInterop ${TARGET_DIR}
+
+mig-up:
+	${TSC} --outDir ${OUT_DIR} --target es2018  --module commonjs --esModuleInterop ${TARGET_DIR}
+	${SCLI} db:migrate
+
+mig-down:
+	${SCLI} db:migrate:undo
+
+mig-seed:
+	${SCLI} db:seed:all
+
+mig-seed-del:
+	${SCLI} db:seed:undo:all

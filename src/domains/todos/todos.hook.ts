@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { Handler, Inject, Injectable } from '~/helpers/di.helper'
 import { AuthMiddleware } from '~/middlewares/auth.middleware'
-import { TodosValidator } from '~/validators/todos.validator'
+import { TodosValidator } from '~/domains/todos/todos.validator'
 
 @Injectable()
 export class TodosHook {
@@ -19,7 +19,7 @@ export class TodosHook {
     return (app: Application): void => {
       app.service('todos').hooks({
         before: {
-          create: [this.authMiddleware.context('todos'), this.todosValidator.todosCreateValidator()],
+          create: [this.todosValidator.todosCreateValidator()],
           find: [this.authMiddleware.context('todos')]
         }
       })

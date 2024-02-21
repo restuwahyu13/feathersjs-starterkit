@@ -2,7 +2,7 @@
 import { HookContext as FeathersHookContext } from '@feathersjs/feathers'
 import { Application as FeathersApplication } from '@feathersjs/express'
 
-import { TodosService } from '~/services/todos.service'
+import { TodosService } from '~/domains/todos/todos.service'
 
 // A mapping of service names to types. Will be extended in service files.
 export interface ServiceTypes {

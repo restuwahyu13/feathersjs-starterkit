@@ -1,13 +1,13 @@
-import { ModelStatic } from 'sequelize'
 import { DependencyContainer } from 'tsyringe'
 
-import { Handler, HandlerContext, Inject, Injectable, Module } from '~/helpers/di.helper'
-import { TodosService } from '~/services/todos.service'
-import { Todos } from '~/models/todos.model'
-import { TodosChannel } from '~/channels/todos.channel'
-import { TodosValidator } from '~/validators/todos.validator'
+import { Handler, Inject, Injectable, Module } from '~/helpers/di.helper'
+import { TodosService } from '~/domains/todos/todos.service'
+import { Todos, TodosModel } from '~/domains/todos/todos.model'
+import { TodosChannel } from '~/domains/todos/todos.channel'
+import { TodosValidator } from '~/domains/todos/todos.validator'
 import { AuthMiddleware } from '~/middlewares/auth.middleware'
-import { TodosHook } from '~/hooks/todos.hook'
+import { TodosHook } from '~/domains/todos/todos.hook'
+import { Repository } from 'sequelize-typescript'
 
 @Module([
   {
@@ -28,7 +28,7 @@ import { TodosHook } from '~/hooks/todos.hook'
   },
   {
     token: 'TodosModel',
-    useFactory(dc: DependencyContainer): ModelStatic<Todos> {
+    useFactory(dc: DependencyContainer): Repository<TodosModel> {
       return dc.resolve(Todos).model
     }
   },

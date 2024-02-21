@@ -1,11 +1,12 @@
 import { HookContext, Params, ServiceMethods } from '@feathersjs/feathers'
 import { StatusCodes as status } from 'http-status-codes'
-import { ModelStatic } from 'sequelize'
+import { Repository } from 'sequelize-typescript'
 
-import { TodosCreateDTO } from '~/dtos/todos.dto'
+import { TodosModel } from '~/domains/todos/todos.model'
 import { apiResponse } from '~/helpers/api.helper'
 import { Inject, Injectable } from '~/helpers/di.helper'
-import { Todos } from '~/models/todos.model'
+import { TodosCreateDTO } from '~/domains/todos/todos.dto'
+import { ITodosModel } from './todos.interface'
 
 @Injectable()
 export class TodosService implements Partial<ServiceMethods<any>> {
@@ -14,11 +15,13 @@ export class TodosService implements Partial<ServiceMethods<any>> {
 
   constructor(
     @Inject('TodosModel')
-    private readonly todosModel: ModelStatic<Todos>
+    private readonly todosModel: Repository<TodosModel>
   ) {}
 
   async find(_params: Params): Promise<Record<string, any> | Record<string, any>[]> {
-    return apiResponse(this.service, { stat_code: status.OK, stat_message: 'Success', data: this.todos })
+    const todos: ITodosModel[] = await this.todosModel.findAll()
+
+    return apiResponse(this.service, { stat_code: status.OK, stat_message: 'Success', data: todos })
   }
 
   async create(data: TodosCreateDTO, _ctx: HookContext): Promise<any> {
