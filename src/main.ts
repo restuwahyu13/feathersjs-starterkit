@@ -16,6 +16,7 @@ import { Container, Module } from '~/helpers/di.helper'
 import { TodosModule } from '~/domains/todos/todos.module'
 import { logger } from '~/libs/winston.lib'
 import { AppModule } from '~/app.module'
+import { Database } from '~/configs/database.config'
 
 @Module([{ token: 'AppModule', useClass: AppModule }])
 export class App {
@@ -27,6 +28,10 @@ export class App {
     this.app = express<Application>(reusify(feathers).get())
     this.port = +process.env.PORT!
     this.env = process.env.NODE_ENV
+  }
+
+  private connection(): void {
+    Database.connect()
   }
 
   private middleware(): void {
@@ -90,6 +95,7 @@ export class App {
   }
 
   main(): void {
+    this.connection()
     this.middleware()
     this.configure()
     this.inject()

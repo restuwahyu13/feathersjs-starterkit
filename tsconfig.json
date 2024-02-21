@@ -18,10 +18,10 @@
     "skipLibCheck": true,
     "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
-    "noUnusedParameters": false,
-    "noUnusedLocals": false,
-    "emitDecoratorMetadata": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "removeComments": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
@@ -33,7 +33,6 @@
     "require": ["tsconfig-paths/register"],
     "compiler": "typescript",
     "files": true,
-    "logError": true,
-    "pretty": true
+    "logError": true
   }
 }

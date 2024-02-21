@@ -19,7 +19,7 @@ export class TodosHook {
     return (app: Application): void => {
       app.service('todos').hooks({
         before: {
-          create: [this.authMiddleware.context('todos'), this.todosValidator.todosCreateValidator()],
+          create: [this.todosValidator.todosCreateValidator()],
           find: [this.authMiddleware.context('todos')]
         }
       })
